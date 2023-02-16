@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Kate Velikodnaya](https://up.htmlacademy.ru/javascript/28/user/2146421).
-* Наставник: `Неизвестно`.
+* Наставник: [Павел Нюкало](https://htmlacademy.ru/profile/id869225).
 
 ---
 
