@@ -6,6 +6,7 @@ function isStringFits (str, lgth) {
   }
   return false;
 }
+isStringFits ('super ', 5);
 
 // Функция, выясняющая, является ли строка полиндромом
 // возвращает true, если строка полиндром, иначе - false.
@@ -23,11 +24,13 @@ function isPolindrom (str) {
   }
   return true;
 }
+isPolindrom ('topoT');
+
 
 // Функция, которая принимает строку, извлекает содержащиеся в ней цифры от 0 до 9
 // Возвращает извлеченные цифры в виде целого положительного числа
-let zero = '0'.charCodeAt(0);
-let nine = '9'.charCodeAt(0);
+const zero = '0'.charCodeAt(0);
+const nine = '9'.charCodeAt(0);
 
 function getNumbers (str) {
   let result = '';
@@ -42,6 +45,7 @@ function getNumbers (str) {
   }
   return Number(result);
 }
+getNumbers ('1 кефир, 0.5 батона');
 
 // Функция, которая принимает три параметра: исходную строку, минимальную длину и строку с добавочными символами
 // Возвращает исходную строку, дополненную указанными символами до заданной длины.
@@ -52,3 +56,4 @@ function newString (str, qty, extraChars) {
     return extraChars.slice(- (extraChars.lenght - 1), qty - str.length) + str;
   }
 }
+newString ('q', 4, 'werty');
