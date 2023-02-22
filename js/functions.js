@@ -1,6 +1,6 @@
 // Функция, вычисляющая, соответствует ли длина строки заданной
 // возвращает true, если длина строки не превыщает заданную, иначе - false.
-const isStringFits = (str, lgth) => str.lenght <= lgth;
+const isStringFits = (string, length) => string.lenght <= length;
 isStringFits ('super ', 5);
 
 
@@ -31,12 +31,17 @@ const zero = '0'.charCodeAt(0);
 
 function getNumbers (str) {
   if (typeof str === 'number') {
-    return str;
+    if (Number.isInteger(str) && str > 0) {
+      return str;
+    }
+    str += '';
+    return Number(str.replaceAll('.', ''));
   }
   let result = '';
   for (let i = 0; i <= str.length - 1; i++) {
     if (str.charCodeAt(i) >= zero && str.charCodeAt(i) <= nine) {
       result += str[i];
+      result = Number(result);
     }
   }
   if (result === '') {
@@ -44,7 +49,7 @@ function getNumbers (str) {
   }
   return result;
 }
-getNumbers ('1 бутылка кефира 0.5 батона');
+getNumbers ('-1.5');
 
 
 // Функция, которая принимает три параметра: исходную строку, минимальную длину и строку с добавочными символами
