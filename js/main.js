@@ -1,3 +1,10 @@
+const OBJECTS_COUNT = 25;
+const COMMENTS_MAX_COUNT = 20;
+const LIKES_MIN_COUNT = 15;
+const LIKES_MAX_COUNT = 200;
+const AVATAR_ID_COUNT = 6;
+const COMMENT_ID_COUNT = 7000;
+
 const NAMES = [
   'Иван',
   'Хуан Себастьян',
@@ -36,6 +43,18 @@ const DESCRIPTON = [
   'Заказ фотосессии - в личку.',
 ];
 
+//Функция, которая возвращает последовательно сгенерированные идентификаторы объектов, счетчик
+const createIdGenerator = () => {
+  let lastGeneratedId = 0;
+
+  return () => {
+    lastGeneratedId += 1;
+    return lastGeneratedId;
+  };
+};
+
+const generateObjectId = createIdGenerator();
+
 //Функция, которая генерирует и возвращает случайное целое число из диапазона
 function getRandomInteger (min, max) {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -62,21 +81,12 @@ function createRandomIdFromRangeGenerator (min, max) {
 }
 
 //Функция, которая создает и возвращает объект-комментарий
-const createCommentObject = () => {
-  const randomCommentId = createRandomIdFromRangeGenerator (1, 7000);
-  const randomAvatarId = getRandomInteger(1, 6);
-
-  return {
-    id: randomCommentId(),
-    avatar: `img/avatar-${randomAvatarId}.svg`,
-    message: randomArrayElement(MASSAGES),
-    name: randomArrayElement(NAMES),
-  };
-};
-
-//Создаем список комментариев - массив объектов
-const commentsArray = Array.from({length: 4}, createCommentObject);
-
+const createComment = () => ({
+  id: createRandomIdFromRangeGenerator (1, COMMENT_ID_COUNT),
+  avatar: `img/avatar-${getRandomInteger(1, AVATAR_ID_COUNT)}.svg`,
+  message: Array.from({length: getRandomInteger(1, 2)}, () => randomArrayElement(MASSAGES)).join(' '),
+  name: randomArrayElement(NAMES),
+});
 
 //Функция, которая возвращает случайный элемент из массива
 function randomArrayElement(array) {
@@ -84,19 +94,18 @@ function randomArrayElement(array) {
 }
 
 const createObject = () => {
-  const randomObjectId = createRandomIdFromRangeGenerator(1, 25);
-  const randomNumberOfLikes = getRandomInteger(15, 200);
-  const randomPhotosId = createRandomIdFromRangeGenerator(1, 25);
+  const randomNumberOfLikes = getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT);
+  const randomPhotosId = createRandomIdFromRangeGenerator(1, OBJECTS_COUNT);
 
   return {
-    id: randomObjectId(),
+    id: generateObjectId(),
     url: `photos/${randomPhotosId()}.jpg`,
     description: randomArrayElement(DESCRIPTON),
     likes: randomNumberOfLikes,
-    comments: commentsArray,
+    comments: Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, createComment),
   };
 };
 
-console.log(createObject());
+const objectsArray = Array.from({length: OBJECTS_COUNT}, createObject);
 
-
+console.log(objectsArray);
