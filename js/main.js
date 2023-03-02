@@ -106,6 +106,6 @@ const createObject = () => {
   };
 };
 
-const objectsArray = Array.from({length: OBJECTS_COUNT}, createObject);
+const createObjectsArray = () => Array.from({length: OBJECTS_COUNT}, createObject);
+createObjectsArray();
 
-console.log(objectsArray);
