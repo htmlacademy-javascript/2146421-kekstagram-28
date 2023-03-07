@@ -93,19 +93,18 @@ function randomArrayElement(array) {
   return array[getRandomInteger(0, array.length - 1)];
 }
 
-const createObject = () => {
-  const randomNumberOfLikes = getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT);
-  const randomPhotosId = createRandomIdFromRangeGenerator(1, OBJECTS_COUNT);
+const randomPhotosId = createRandomIdFromRangeGenerator(1, OBJECTS_COUNT);
 
-  return {
-    id: generateObjectId(),
-    url: `photos/${randomPhotosId()}.jpg`,
-    description: randomArrayElement(DESCRIPTON),
-    likes: randomNumberOfLikes,
-    comments: Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, createComment),
-  };
-};
+//Функция, которая создает объект
+const createObject = () => ({
+  id: generateObjectId(),
+  url: `photos/${randomPhotosId()}.jpg`,
+  description: randomArrayElement(DESCRIPTON),
+  likes: getRandomInteger(LIKES_MIN_COUNT, LIKES_MAX_COUNT),
+  comments: Array.from({length: getRandomInteger(1, COMMENTS_MAX_COUNT)}, createComment),
+});
+
 
 const createObjectsArray = () => Array.from({length: OBJECTS_COUNT}, createObject);
-createObjectsArray();
 
+console.log(createObjectsArray());
