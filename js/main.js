@@ -1,3 +1,4 @@
 import { createObjectsArray } from './data.js';
-
-createObjectsArray();
+import { createPictures } from './create-miniatures.js';
+const picturesArray = createObjectsArray();
+createPictures(picturesArray);
