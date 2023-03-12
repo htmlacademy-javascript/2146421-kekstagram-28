@@ -1,4 +1,4 @@
-import { getRandomInteger, createRandomIdFromRangeGenerator, randomArrayElement, createIdGenerator } from './ulil.js';
+import { getRandomInteger, createRandomIdFromRangeGenerator, randomArrayElement, createIdGenerator } from './util.js';
 
 const OBJECTS_COUNT = 25;
 const COMMENTS_MAX_COUNT = 20;
@@ -55,7 +55,8 @@ const createComment = () => ({
   name: randomArrayElement(NAMES),
 });
 
-const randomPhotosId = createRandomIdFromRangeGenerator(1, OBJECTS_COUNT);
+const randomPhotosId = createRandomIdFromRangeGenerator (1, OBJECTS_COUNT);
+
 
 //Функция, которая создает объект
 const createObject = () => ({
@@ -68,6 +69,5 @@ const createObject = () => ({
 
 //Функция, которая создает массив объектов
 const createObjectsArray = () => Array.from({length: OBJECTS_COUNT}, createObject);
-createObjectsArray();
 
 export { createObjectsArray };
