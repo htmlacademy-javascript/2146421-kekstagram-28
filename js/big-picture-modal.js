@@ -33,11 +33,9 @@ const renderBigPictureContent = (object) => {
   bigPicturePreview.querySelector('.likes-count').textContent = object.likes;
   bigPicturePreview.querySelector('.comments-count').textContent = object.comments.length;
   bigPicturePreview.querySelector('.social__caption').textContent = object.description;
-  bigPicturePreview.querySelector('.social__comment-count').classList.add ('hidden');
 };
 
 const onPictureClick = (evt) => {
-
   if (evt.target.closest('.picture')) {
     const target = evt.target.closest('.picture');
     bigPicture.classList.remove('hidden');
@@ -52,54 +50,43 @@ const onPictureClick = (evt) => {
 
     const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
 
-    for (let i = 0; i < 5; i++) {
-      hiddenComments[i].classList.remove('hidden');
-    }
-
-    if (hiddenComments.length > 5) {
-      commentsLoadButton.classList.remove ('hidden');
-    }
-
+    showFirstComments (hiddenComments);
   }
 };
 
+function showFirstComments (array) {
+  const end = Math.min(array.length, 5);
+  for (let i = 0; i < end; i++) {
+    array[i].classList.remove('hidden');
+  }
 
-// function showFirstComments () {
-//   const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
-
-//   for (let i = 0; i < 5; i++) {
-//     hiddenComments[i].classList.remove('hidden');
-//   }
-
-//   if (hiddenComments.length > 5) {
-//     commentsLoadButton.classList.remove ('hidden');
-//   }
-// }
+  if (array.length > 5) {
+    commentsLoadButton.classList.remove('hidden');
+  }
+  updateCommentsCounetrs();
+}
 
 
-// const createComments = () => {
-//   const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
-//   const сommentsQty = hiddenComments.length + 5;
-//   let loadedCommentsQty = 5;
+const loadComments = () => {
+  const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
+  const end = Math.min(hiddenComments.length, 5);
+  for (let i = 0; i < end; i++) {
+    hiddenComments[i].classList.remove('hidden');
+  }
+  if (hiddenComments.length <= end) {
+    commentsLoadButton.classList.add('hidden');
+  }
+  updateCommentsCounetrs();
+};
 
-//   return function () {
-//     if (loadedCommentsQty < сommentsQty) {
-//       for (let i = loadedCommentsQty; i < loadedCommentsQty + 5; i++) {
-//         hiddenComments[i].classList.remove('hidden');
-//         loadedCommentsQty += 5;
-//       }
-//     } else {
-//       commentsLoadButton.classList.add('hidden');
-//     }
-//   };
-// };
+function updateCommentsCounetrs () {
+  bigPicturePreview.querySelector('.loaded-count').textContent = bigPicturePreview.querySelector('.social__comments').querySelectorAll('li:not(.hidden)').length;
+}
 
-// const loadComments = createComments();
 
-// commentsLoadButton.addEventListener ('click', () => {
-//   loadComments();
-// });
-
+commentsLoadButton.addEventListener ('click', () => {
+  loadComments();
+});
 
 //Функция, которая отрисовывает разметку под комменты
 function renderBigPictureComments (array) {
@@ -134,3 +121,4 @@ function closeBigPicture () {
 bigPictureCloseElement.addEventListener ('click', () => {
   closeBigPicture();
 });
+
