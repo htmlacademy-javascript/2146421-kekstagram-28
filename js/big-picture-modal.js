@@ -1,6 +1,7 @@
 import { picturesArray } from './main.js';
 import { isEscapeKey } from './util.js';
 
+const COMMENTS_PORTION_FOR_LOADING = 5;
 const picturesContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 const bigPicturePreview = document.querySelector('.big-picture__preview');
@@ -55,12 +56,12 @@ const onPictureClick = (evt) => {
 };
 
 function showFirstComments (array) {
-  const end = Math.min(array.length, 5);
+  const end = Math.min(array.length, COMMENTS_PORTION_FOR_LOADING);
   for (let i = 0; i < end; i++) {
     array[i].classList.remove('hidden');
   }
 
-  if (array.length > 5) {
+  if (array.length > COMMENTS_PORTION_FOR_LOADING) {
     commentsLoadButton.classList.remove('hidden');
   }
   updateCommentsCounetrs();
@@ -69,7 +70,7 @@ function showFirstComments (array) {
 
 const loadComments = () => {
   const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
-  const end = Math.min(hiddenComments.length, 5);
+  const end = Math.min(hiddenComments.length, COMMENTS_PORTION_FOR_LOADING);
   for (let i = 0; i < end; i++) {
     hiddenComments[i].classList.remove('hidden');
   }
