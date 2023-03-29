@@ -1,10 +1,16 @@
 import { isEscapeKey } from './util.js';
+import { resetEffects } from './image-filters.js';
+import { resetScale } from './scale-image.js';
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_QTY = 5;
+const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
 const imgUploadFile = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancelButton = document.querySelector('.img-upload__cancel ');
 const description = document.querySelector('.text__description');
+const form = document.querySelector('.img-upload__form');
+const imgUploadForm = document.querySelector('.img-upload__form');
+const hashtagField = imgUploadForm.querySelector('.text__hashtags');
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -20,11 +26,13 @@ const openUploadForm = () => {
 };
 
 function closeUploadForm () {
+  resetEffects();
+  resetScale();
+  form.reset();
   imgUploadOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
   imgUploadFile.value = '';
-  imgUploadOverlay.reset();
 }
 
 imgUploadFile.addEventListener('change', () => {
@@ -34,8 +42,6 @@ imgUploadFile.addEventListener('change', () => {
 uploadCancelButton.addEventListener('click', () => {
   closeUploadForm();
 });
-
-const imgUploadForm = document.querySelector('.img-upload__form');
 
 const pristine = new Pristine (imgUploadForm, {
   classTo: 'img-upload__text',
@@ -47,9 +53,6 @@ const pristine = new Pristine (imgUploadForm, {
 });
 
 //Проверка валидности хештегов
-
-const validSymbols = /^#[a-zа-я0-9]{1,19}$/i;
-const hashtagField = imgUploadForm.querySelector('.text__hashtags');
 
 const inputInFocus = (evt) => {
   if (isEscapeKey(evt)) {
@@ -68,13 +71,13 @@ function isTagValid() {
   if (hashtagField.value.length === 0) {
     return true;
   }
-  return hashtagsArray.every((hashtag) => validSymbols.test(hashtag));
+  return hashtagsArray.every((hashtag) => VALID_SYMBOLS.test(hashtag));
 }
 
 pristine.addValidator(
   hashtagField,
   isTagValid,
-  'Неверный хештег'
+  'Хештег должен начинаться с #, содержать буквы или цифры, быть не длиннее 20 символов.'
 );
 
 //функция, которая проверяет количество хэштегов
@@ -90,17 +93,12 @@ pristine.addValidator(
 );
 
 //функция, которая проверяет уникальность хэштегов
+
 function validateHashtagUnique () {
-  const values = [];
   const hashtagsArray = hashtagField.value.split(' ');
-  for (let i = 0; i < hashtagsArray.length; i++) {
-    const value = hashtagsArray[i];
-    if (values.indexOf(value) !== -1) {
-      return false;
-    }
-    values.push(value);
-  }
-  return true;
+  const uniqueHashtags = new Set(hashtagsArray);
+
+  return hashtagsArray.length === uniqueHashtags.size;
 }
 
 pristine.addValidator(
