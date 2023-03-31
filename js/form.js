@@ -66,13 +66,13 @@ description.addEventListener('keydown', inputInFocus);
 
 
 //Функция, проверяющая соответствие символом хештега
-function isTagValid() {
+const isTagValid = () => {
   const hashtagsArray = hashtagField.value.split(' ');
   if (hashtagField.value.length === 0) {
     return true;
   }
   return hashtagsArray.every((hashtag) => VALID_SYMBOLS.test(hashtag));
-}
+};
 
 pristine.addValidator(
   hashtagField,
@@ -81,10 +81,10 @@ pristine.addValidator(
 );
 
 //функция, которая проверяет количество хэштегов
-function validateHashtagCount () {
+const validateHashtagCount = () => {
   const hashtagsArray = hashtagField.value.split(' ');
   return hashtagsArray.length <= HASHTAG_MAX_QTY;
-}
+};
 
 pristine.addValidator(
   hashtagField,
@@ -94,12 +94,12 @@ pristine.addValidator(
 
 //функция, которая проверяет уникальность хэштегов
 
-function validateHashtagUnique () {
+const validateHashtagUnique = () => {
   const hashtagsArray = hashtagField.value.split(' ');
   const uniqueHashtags = new Set(hashtagsArray);
 
   return hashtagsArray.length === uniqueHashtags.size;
-}
+};
 
 pristine.addValidator(
   hashtagField,

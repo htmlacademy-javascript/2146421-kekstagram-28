@@ -1,9 +1,3 @@
-const sliderElement = document.querySelector('.effect-level__slider');
-const filtersGroup = document.querySelector('.effects__list');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
-const effectLevel = document.querySelector('.effect-level__value');
-const sliderContainer = document.querySelector('.img-upload__effect-level');
-
 const EFFECTS = [
   {
     name: 'none',
@@ -61,19 +55,25 @@ const EFFECTS = [
   },
 ];
 
-function hideSlider () {
-  sliderContainer.classList.add('hidden');
-}
+const sliderElement = document.querySelector('.effect-level__slider');
+const filtersGroup = document.querySelector('.effects__list');
+const imgUploadPreview = document.querySelector('.img-upload__preview');
+const effectLevel = document.querySelector('.effect-level__value');
+const sliderContainer = document.querySelector('.img-upload__effect-level');
 
-function unhideSlider () {
+const hideSlider = () => {
+  sliderContainer.classList.add('hidden');
+};
+
+const unhideSlider = () => {
   sliderContainer.classList.remove('hidden');
-}
+};
 const defaultEffectObject = EFFECTS[0];
 
 let needfulEffectsItem = defaultEffectObject;
 let prevFilterClass;
 
-function createSlider () {
+const createSlider = () => {
   noUiSlider.create(sliderElement, {
     range: {
       min: needfulEffectsItem.min,
@@ -83,13 +83,13 @@ function createSlider () {
     step: needfulEffectsItem.step,
     connect: 'lower',
   });
-}
+};
 createSlider();
 hideSlider ();
 
 
 //функция, которая создает новый слайдер по полученным данным о фильтре
-function updateSlider () {
+const updateSlider = () => {
   sliderElement.noUiSlider.updateOptions({
     range: {
       min: needfulEffectsItem.min,
@@ -99,19 +99,11 @@ function updateSlider () {
     step: needfulEffectsItem.step,
     connect: 'lower',
   });
-}
+};
 
 
 //функция, которая находит нужный объект в массиве с объектами эффектов и создает под него слайдер
-function changeEffects (evt) {
-
-  // if (!evt.target.classList.contains('effects__radio')) {
-  //   return;
-  // }
-  // needfulEffectsItem = EFFECTS.find((effect) => effect.name === evt.target.value);
-  // imgUploadPreview.className = (`effects__preview--${needfulEffectsItem.name}`);
-  // updateSlider();
-  //needfulEffectsItem = EFFECTS[0];
+const changeEffects = (evt) => {
   needfulEffectsItem = EFFECTS.find((effect) => (evt.target.value === effect.name));
   if (prevFilterClass) {
     imgUploadPreview.classList.remove(prevFilterClass);
@@ -121,7 +113,7 @@ function changeEffects (evt) {
   prevFilterClass = currFilterClass;
   unhideSlider();
   updateSlider ();
-}
+};
 
 const resetEffects = () => {
   needfulEffectsItem = EFFECTS[0];

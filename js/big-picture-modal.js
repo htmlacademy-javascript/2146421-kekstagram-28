@@ -36,6 +36,44 @@ const renderBigPictureContent = (object) => {
   bigPicturePreview.querySelector('.social__caption').textContent = object.description;
 };
 
+//Функция, которая отрисовывает разметку под комменты
+const renderBigPictureComments = (array) => {
+
+  array.forEach((element) => {
+    const commentItem = document.createElement('li');
+    commentItem.classList.add ('social__comment', 'hidden');
+    bigPicturePreview.querySelector('.social__comments').append(commentItem);
+    const commentImg = document.createElement('img');
+    commentImg.classList.add ('social__picture');
+    commentImg.src = element.avatar;
+    commentImg.alt = element.name;
+    commentImg.width = 35;
+    commentImg.height = 35;
+    commentItem.append(commentImg);
+    const commentText = document.createElement('p');
+    commentText.classList.add ('social__text');
+    commentText.textContent = element.message;
+    commentItem.append(commentText);
+  });
+};
+
+const updateCommentsCounetrs = () => {
+  bigPicturePreview.querySelector('.loaded-count').textContent = bigPicturePreview.querySelector('.social__comments').querySelectorAll('li:not(.hidden)').length;
+};
+
+
+const showFirstComments = (array) => {
+  const end = Math.min(array.length, COMMENTS_PORTION_FOR_LOADING);
+  for (let i = 0; i < end; i++) {
+    array[i].classList.remove('hidden');
+  }
+
+  if (array.length > COMMENTS_PORTION_FOR_LOADING) {
+    commentsLoadButton.classList.remove('hidden');
+  }
+  updateCommentsCounetrs();
+};
+
 const onPictureClick = (evt) => {
   if (evt.target.closest('.picture')) {
     const target = evt.target.closest('.picture');
@@ -55,18 +93,6 @@ const onPictureClick = (evt) => {
   }
 };
 
-function showFirstComments (array) {
-  const end = Math.min(array.length, COMMENTS_PORTION_FOR_LOADING);
-  for (let i = 0; i < end; i++) {
-    array[i].classList.remove('hidden');
-  }
-
-  if (array.length > COMMENTS_PORTION_FOR_LOADING) {
-    commentsLoadButton.classList.remove('hidden');
-  }
-  updateCommentsCounetrs();
-}
-
 
 const loadComments = () => {
   const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
@@ -80,35 +106,11 @@ const loadComments = () => {
   updateCommentsCounetrs();
 };
 
-function updateCommentsCounetrs () {
-  bigPicturePreview.querySelector('.loaded-count').textContent = bigPicturePreview.querySelector('.social__comments').querySelectorAll('li:not(.hidden)').length;
-}
-
 
 commentsLoadButton.addEventListener ('click', () => {
   loadComments();
 });
 
-//Функция, которая отрисовывает разметку под комменты
-function renderBigPictureComments (array) {
-
-  array.forEach((element) => {
-    const commentItem = document.createElement('li');
-    commentItem.classList.add ('social__comment', 'hidden');
-    bigPicturePreview.querySelector('.social__comments').append(commentItem);
-    const commentImg = document.createElement('img');
-    commentImg.classList.add ('social__picture');
-    commentImg.src = element.avatar;
-    commentImg.alt = element.name;
-    commentImg.width = 35;
-    commentImg.height = 35;
-    commentItem.append(commentImg);
-    const commentText = document.createElement('p');
-    commentText.classList.add ('social__text');
-    commentText.textContent = element.message;
-    commentItem.append(commentText);
-  });
-}
 
 picturesContainer.addEventListener('click', onPictureClick);
 

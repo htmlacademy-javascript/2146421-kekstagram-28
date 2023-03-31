@@ -6,6 +6,19 @@ const biggerControlButton = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
 const imgUploadPreview = document.querySelector('.img-upload__preview');
 
+const getScaleValue = () => {
+  const scaleValue = parseInt(scaleControlValue.value, 10);
+  return scaleValue;
+};
+
+const changeImgScale = (elem) => {
+  elem = parseInt(elem, 10);
+  imgUploadPreview.style.transform = `scale(${elem / 100})`;
+};
+
+const resetScale = () => {
+  imgUploadPreview.style.transform = 'scale(1)';
+};
 
 smallerControlButton.addEventListener('click', () => {
   if (getScaleValue () !== MIN_SCALE) {
@@ -20,19 +33,5 @@ biggerControlButton.addEventListener('click', () => {
     changeImgScale (scaleControlValue.value);
   }
 });
-
-function getScaleValue () {
-  const scaleValue = parseInt(scaleControlValue.value, 10);
-  return scaleValue;
-}
-
-function changeImgScale (elem) {
-  elem = parseInt(elem, 10);
-  imgUploadPreview.style.transform = `scale(${elem / 100})`;
-}
-
-function resetScale() {
-  imgUploadPreview.style.transform = 'scale(1)';
-}
 
 export { resetScale };
