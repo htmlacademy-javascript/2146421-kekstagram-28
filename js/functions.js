@@ -6,7 +6,7 @@ isStringFits ('super ', 5);
 
 // Функция, выясняющая, является ли строка полиндромом
 // возвращает true, если строка полиндром, иначе - false.
-function isPalindrom (str) {
+const isPalindrom = (str) => {
   str = str
     .toLowerCase()
     .replaceAll(' ', '');
@@ -20,7 +20,7 @@ function isPalindrom (str) {
     j--;
   }
   return true;
-}
+};
 isPalindrom ('topoT');
 
 
@@ -29,7 +29,7 @@ isPalindrom ('topoT');
 const nine = '9'.charCodeAt(0);
 const zero = '0'.charCodeAt(0);
 
-function getNumbers (str) {
+const getNumbers = (str) => {
   if (typeof str === 'number') {
     if (Number.isInteger(str) && str > 0) {
       return str;
@@ -48,17 +48,17 @@ function getNumbers (str) {
     return NaN;
   }
   return result;
-}
+};
 getNumbers ('-1.5');
 
 
 // Функция, которая принимает три параметра: исходную строку, минимальную длину и строку с добавочными символами
 // Возвращает исходную строку, дополненную указанными символами до заданной длины.
-function newString (str, minLength, pad) {
+const newString = (str, minLength, pad) => {
   const actualPad = minLength - str.length;
   if (str.length >= minLength) {
     return str;
   }
   return pad.slice(0, actualPad % pad.length) + pad.repeat(actualPad / pad.length) + str;
-}
+};
 newString ('qoi', 6, 'we');
