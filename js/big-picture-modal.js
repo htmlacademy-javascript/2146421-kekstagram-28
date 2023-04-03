@@ -124,4 +124,3 @@ function closeBigPicture () {
 bigPictureCloseElement.addEventListener ('click', () => {
   closeBigPicture();
 });
-
