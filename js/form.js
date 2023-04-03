@@ -1,6 +1,7 @@
-import { isEscapeKey } from './util.js';
+import { isEscapeKey, showSuccessMessage } from './util.js';
 import { resetEffects } from './image-filters.js';
 import { resetScale } from './scale-image.js';
+import { showAlert } from './util.js';
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_QTY = 5;
 const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
@@ -118,14 +119,19 @@ pristine.addValidator(
   'Комментарий слишком длинный'
 );
 
-
-const onFormSubmit = (evt) => {
+imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if(pristine.validate()) {
-    imgUploadForm.submit();
+    const formData = new FormData(evt.target);
+    fetch(
+      'https://28.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    ).then (closeUploadForm()).then (showSuccessMessage('Фото добавлено!'))
+      .catch (showAlert('Ошибка отправки!'));
   }
-};
-
-imgUploadForm.addEventListener('submit', onFormSubmit);
+});
 
 

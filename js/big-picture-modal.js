@@ -1,5 +1,7 @@
-import { picturesArray } from './main.js';
+//import { picturesArray } from './main.js';
+import { getData } from './api.js';
 import { isEscapeKey } from './util.js';
+
 
 const COMMENTS_PORTION_FOR_LOADING = 5;
 const picturesContainer = document.querySelector('.pictures');
@@ -9,13 +11,15 @@ const bigPictureCloseElement = bigPicture.querySelector('.big-picture__cancel');
 const bigPictureCommentList = bigPicturePreview.querySelector('.social__comments');
 const commentsLoadButton = bigPicturePreview.querySelector('.social__comments-loader');
 
-
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPicture();
   }
 };
+
+
+const picturesArray = await getData();
 
 const clearBigPictureComments = () => {
   bigPictureCommentList.innerHTML = '';
