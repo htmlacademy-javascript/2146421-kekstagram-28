@@ -17,6 +17,8 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
+const picturesArray = await getData();
+
 const clearBigPictureComments = () => {
   bigPictureCommentList.innerHTML = '';
 };
