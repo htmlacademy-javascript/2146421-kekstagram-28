@@ -1,6 +1,7 @@
 import { isEscapeKey } from './util.js';
 import { resetEffects } from './image-filters.js';
 import { resetScale } from './scale-image.js';
+import { sendData } from './api.js';
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_QTY = 5;
 const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
@@ -119,13 +120,11 @@ pristine.addValidator(
 );
 
 
-const onFormSubmit = (evt) => {
+imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if(pristine.validate()) {
-    imgUploadForm.submit();
+    const formData = new FormData(evt.target);
+    sendData(formData);
+    closeUploadForm();
   }
-};
-
-imgUploadForm.addEventListener('submit', onFormSubmit);
-
-
+});
