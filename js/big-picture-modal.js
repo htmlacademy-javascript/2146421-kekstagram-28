@@ -1,4 +1,4 @@
-import { picturesArray } from './main.js';
+import { getData } from './api.js';
 import { isEscapeKey } from './util.js';
 
 const COMMENTS_PORTION_FOR_LOADING = 5;
