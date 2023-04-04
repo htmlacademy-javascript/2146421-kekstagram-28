@@ -1,9 +1,8 @@
 import { showAlert, showSuccessMessage } from './util.js';
 
-const BASE_URL = 'https://28.javascript.pages.academy/kekstagram';
+const BASE_URL = 'https://28.javascript.pages.academ/kekstagram';
 const Route = {
   GET_DATA: '/data',
-  SEND_DATA: '/',
 };
 
 const ErrorText = {
@@ -23,8 +22,7 @@ const getData = () => fetch(`${BASE_URL}${Route.GET_DATA}`)
   });
 
 const sendData = (formData) => {
-  fetch(
-    fetch(`${BASE_URL}${Route.SEND_DATA}`),
+  fetch((`${BASE_URL}`),
     {
       method: 'POST',
       body: formData,
