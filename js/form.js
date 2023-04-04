@@ -16,7 +16,12 @@ const hashtagField = imgUploadForm.querySelector('.text__hashtags');
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeUploadForm();
+    const alertModal = document.querySelector('.error');
+    if (alertModal) {
+      alertModal.remove();
+    } else {
+      closeUploadForm();
+    }
   }
 };
 

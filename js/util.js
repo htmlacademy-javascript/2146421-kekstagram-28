@@ -42,17 +42,22 @@ const createIdGenerator = () => {
 };
 
 //функция, которая генерирует сообщение об ошибке отправки данных на сервер
+
 const showAlert = () => {
-  const alertTemplate = document.querySelector('#error').content.querySelector('.error');
-  const error = document.createElement('div');
-  error.append(alertTemplate.cloneNode(true));
-  document.body.append(error);
-  const closeAlertButton = error.querySelector('.error__button');
-  closeAlertButton.addEventListener('click', () => {
-    error.classList.add('hidden');
+  const alertTemplate = document.querySelector('#error').content;
+  const alertMessage = alertTemplate.cloneNode(true);
+  document.body.append(alertMessage);
+  const alertModal = document.querySelector('.error');
+  const errorButton = alertModal.querySelector('.error__button');
+  errorButton.addEventListener('click', () => {
+    alertModal.remove();
+  });
+  document.addEventListener('click', () => {
+    alertModal.remove();
   });
 };
 
+//Функция, которая генерирует сообщение об ошибке загрузки фото других пользователей
 const loadingErrorMessage = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
@@ -65,9 +70,7 @@ const loadingErrorMessage = (message) => {
   alertContainer.style.color = 'white';
   alertContainer.style.textAlign = 'center';
   alertContainer.style.backgroundColor = 'tomato';
-
   alertContainer.textContent = message;
-
   document.body.append(alertContainer);
 
   setTimeout(() => {
@@ -75,79 +78,26 @@ const loadingErrorMessage = (message) => {
   }, MESSAGE_SHOW_TIME);
 };
 
+//Функция, которая генерирует сообщение об ошибке загрузки фото пользователя
 const showSuccessMessage = () => {
   const successMessageTemplate = document.querySelector('#success').content;
-  const success = document.createElement('div');
-  success.append(successMessage.cloneNode(true));
-  document.body.append(success);
-  const successButton = success.querySelector('.success__button');
+  const successMessage = successMessageTemplate.cloneNode(true);
+  document.body.append(successMessage);
+  const successModal = document.querySelector('.success');
+  const successButton = successModal.querySelector('.success__button');
   successButton.addEventListener('click', () => {
-    success.remove();
+    successModal.remove();
   });
-  successButton.addEventListener('keydown', (evt) => {
+  document.addEventListener('keydown', (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
-      success.remove();
+      successModal.remove();
     }
   });
-  document.addEventListener('click', (evt) => {
-    if (!evt.target.matches('.success')) {
-      success.remove();
-    }
+  document.addEventListener('click', () => {
+    successModal.remove();
   });
 };
 
 export { getRandomInteger, createRandomIdFromRangeGenerator, randomArrayElement, createIdGenerator, isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage};
 
-
-import {onDocKeydown} from './upload-modal.js';
-const successMessageTemplate = document.querySelector('#success').content;
-const errorMessageTemplate = document.querySelector('#error').content;
-const successMessage = successMessageTemplate.cloneNode(true);
-const errorMessage = errorMessageTemplate.cloneNode(true);
-
-const onClickCloseModal = (evt) => {
-  if (evt.target.matches('.success')) {
-    document.querySelector('.success').remove();
-  } else if (evt.target.matches('.error')) {
-    document.querySelector('.error').remove();
-  }
-};
-
-const closeSuccessMessage = () => {
-  document.querySelector('.success').remove();
-};
-
-export const uploadSuccess = () => {
-  document.body.append(successMessage);
-  const successModal = document.querySelector('.success');
-  const successButton = document.querySelector('.success__button');
-  successModal.addEventListener('click', onClickCloseModal);
-  successButton.addEventListener('click', closeSuccessMessage);
-  document.removeEventListener('keydown', onDocKeydown);
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      document.querySelector('.success').remove();
-      document.addEventListener('keydown', onDocKeydown);
-    }
-  });
-};
-
-const closeErrorMessage = () => {
-  document.querySelector('.error').remove();
-};
-
-export const uploadError = () => {
-  document.body.append(errorMessage);
-  const errorModal = document.querySelector('.error');
-  const errorButton = document.querySelector('.error__button');
-  errorModal.addEventListener('click', onClickCloseModal);
-  errorButton.addEventListener('click', closeErrorMessage);
-  document.removeEventListener('keydown', onDocKeydown);
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      document.querySelector('.error').remove();
-      document.addEventListener('keydown', onDocKeydown);
-    }
-  });
-};

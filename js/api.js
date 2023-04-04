@@ -26,7 +26,7 @@ const getData = () => fetch(`${BASE_URL}${Route.GET_DATA}`)
 const sendData = (formData) => {
   fetch((`${BASE_URL}`),
     {
-      method: 'POST',
+      method: 'POT',
       body: formData,
     },
   ).then((response) => {
