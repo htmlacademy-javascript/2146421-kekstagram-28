@@ -1,3 +1,5 @@
+const MESSAGE_SHOW_TIME = 5000;
+
 //Функция, которая генерирует и возвращает случайное целое число из диапазона
 const getRandomInteger = (min, max) => {
   const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
@@ -40,7 +42,7 @@ const createIdGenerator = () => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-//функция, которая генерирует сообщение об ошибке загрузки/отправки данных на сервер
+//функция, которая генерирует сообщение об ошибке отправки данных на сервер
 const showAlert = () => {
   const alertTemplate = document.querySelector('#error').content.querySelector('.error');
   const error = document.createElement('div');
@@ -52,6 +54,27 @@ const showAlert = () => {
   });
 };
 
+const loadingErrorMessage = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.style.zIndex = '100';
+  alertContainer.style.position = 'absolute';
+  alertContainer.style.left = '20%';
+  alertContainer.style.top = '10%';
+  alertContainer.style.right = '20%';
+  alertContainer.style.padding = '20px 3px';
+  alertContainer.style.fontSize = '20px';
+  alertContainer.style.color = 'white';
+  alertContainer.style.textAlign = 'center';
+  alertContainer.style.backgroundColor = 'tomato';
+
+  alertContainer.textContent = message;
+
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, MESSAGE_SHOW_TIME);
+};
 
 const showSuccessMessage = (message) => {
   const alertContainer = document.createElement('div');
@@ -72,7 +95,7 @@ const showSuccessMessage = (message) => {
 
   setTimeout(() => {
     alertContainer.remove();
-  }, 5000);
+  }, MESSAGE_SHOW_TIME);
 };
 
-export { getRandomInteger, createRandomIdFromRangeGenerator, randomArrayElement, createIdGenerator, isEscapeKey, showAlert, showSuccessMessage};
+export { getRandomInteger, createRandomIdFromRangeGenerator, randomArrayElement, createIdGenerator, isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage};

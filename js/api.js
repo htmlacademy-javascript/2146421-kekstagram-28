@@ -1,6 +1,6 @@
-import { showAlert, showSuccessMessage } from './util.js';
+import { showAlert, loadingErrorMessage, showSuccessMessage } from './util.js';
 
-const BASE_URL = 'https://28.javascript.pages.academ/kekstagram';
+const BASE_URL = 'https://28.javascript.pages.academy/kekstagram';
 const Route = {
   GET_DATA: '/data',
 };
@@ -18,7 +18,7 @@ const getData = () => fetch(`${BASE_URL}${Route.GET_DATA}`)
     return response.json();
   })
   .catch(() => {
-    showAlert(`${ErrorText.GET_DATA}`);
+    loadingErrorMessage(`${ErrorText.GET_DATA}`);
   });
 
 const sendData = (formData) => {
