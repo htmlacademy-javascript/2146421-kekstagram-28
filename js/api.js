@@ -1,4 +1,5 @@
 import { showAlert, loadingErrorMessage, showSuccessMessage } from './util.js';
+import { closeUploadForm } from './form.js';
 
 const BASE_URL = 'https://28.javascript.pages.academy/kekstagram';
 const Route = {
@@ -9,6 +10,7 @@ const ErrorText = {
   GET_DATA: 'Не удалось загрузить данные. Пожалуйста, обновите страницу',
   SEND_DATA: 'Не удалось отправить данные. Произошла ошибка',
 };
+
 
 const getData = () => fetch(`${BASE_URL}${Route.GET_DATA}`)
   .then((response) => {
@@ -32,6 +34,7 @@ const sendData = (formData) => {
       throw new Error();
     }
     showSuccessMessage('Фото добавлено!');
+    closeUploadForm();
   })
     .catch(() => {
       showAlert(`${ErrorText.SEND_DATA}`);

@@ -1,3 +1,4 @@
+const isEscapeKey = (evt) => evt.key === 'Escape';
 const MESSAGE_SHOW_TIME = 5000;
 
 //Функция, которая генерирует и возвращает случайное целое число из диапазона
@@ -40,8 +41,6 @@ const createIdGenerator = () => {
   };
 };
 
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
 //функция, которая генерирует сообщение об ошибке отправки данных на сервер
 const showAlert = () => {
   const alertTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -76,26 +75,79 @@ const loadingErrorMessage = (message) => {
   }, MESSAGE_SHOW_TIME);
 };
 
-const showSuccessMessage = (message) => {
-  const alertContainer = document.createElement('div');
-  alertContainer.style.zIndex = '100';
-  alertContainer.style.position = 'absolute';
-  alertContainer.style.left = '40%';
-  alertContainer.style.top = '50%';
-  alertContainer.style.right = '40%';
-  alertContainer.style.padding = '40px 3px';
-  alertContainer.style.fontSize = '20px';
-  alertContainer.style.color = 'black';
-  alertContainer.style.textAlign = 'center';
-  alertContainer.style.backgroundColor = 'lightgrey';
-
-  alertContainer.textContent = message;
-
-  document.body.append(alertContainer);
-
-  setTimeout(() => {
-    alertContainer.remove();
-  }, MESSAGE_SHOW_TIME);
+const showSuccessMessage = () => {
+  const successMessageTemplate = document.querySelector('#success').content;
+  const success = document.createElement('div');
+  success.append(successMessage.cloneNode(true));
+  document.body.append(success);
+  const successButton = success.querySelector('.success__button');
+  successButton.addEventListener('click', () => {
+    success.remove();
+  });
+  successButton.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      success.remove();
+    }
+  });
+  document.addEventListener('click', (evt) => {
+    if (!evt.target.matches('.success')) {
+      success.remove();
+    }
+  });
 };
 
 export { getRandomInteger, createRandomIdFromRangeGenerator, randomArrayElement, createIdGenerator, isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage};
+
+
+import {onDocKeydown} from './upload-modal.js';
+const successMessageTemplate = document.querySelector('#success').content;
+const errorMessageTemplate = document.querySelector('#error').content;
+const successMessage = successMessageTemplate.cloneNode(true);
+const errorMessage = errorMessageTemplate.cloneNode(true);
+
+const onClickCloseModal = (evt) => {
+  if (evt.target.matches('.success')) {
+    document.querySelector('.success').remove();
+  } else if (evt.target.matches('.error')) {
+    document.querySelector('.error').remove();
+  }
+};
+
+const closeSuccessMessage = () => {
+  document.querySelector('.success').remove();
+};
+
+export const uploadSuccess = () => {
+  document.body.append(successMessage);
+  const successModal = document.querySelector('.success');
+  const successButton = document.querySelector('.success__button');
+  successModal.addEventListener('click', onClickCloseModal);
+  successButton.addEventListener('click', closeSuccessMessage);
+  document.removeEventListener('keydown', onDocKeydown);
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      document.querySelector('.success').remove();
+      document.addEventListener('keydown', onDocKeydown);
+    }
+  });
+};
+
+const closeErrorMessage = () => {
+  document.querySelector('.error').remove();
+};
+
+export const uploadError = () => {
+  document.body.append(errorMessage);
+  const errorModal = document.querySelector('.error');
+  const errorButton = document.querySelector('.error__button');
+  errorModal.addEventListener('click', onClickCloseModal);
+  errorButton.addEventListener('click', closeErrorMessage);
+  document.removeEventListener('keydown', onDocKeydown);
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      document.querySelector('.error').remove();
+      document.addEventListener('keydown', onDocKeydown);
+    }
+  });
+};

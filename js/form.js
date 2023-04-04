@@ -26,7 +26,7 @@ const openUploadForm = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-function closeUploadForm () {
+export function closeUploadForm () {
   resetEffects();
   resetScale();
   form.reset();
@@ -125,6 +125,5 @@ imgUploadForm.addEventListener('submit', (evt) => {
   if(pristine.validate()) {
     const formData = new FormData(evt.target);
     sendData(formData);
-    closeUploadForm();
   }
 });

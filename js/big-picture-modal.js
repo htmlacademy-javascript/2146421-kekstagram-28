@@ -90,7 +90,6 @@ const onPictureClick = (evt) => {
     renderBigPictureComments(currentCommentsArray);
 
     const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
-
     showFirstComments (hiddenComments);
   }
 };
