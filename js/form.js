@@ -5,6 +5,10 @@ import { sendData } from './api.js';
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_QTY = 5;
 const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
+const submitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую'
+};
 const imgUploadFile = document.querySelector('#upload-file');
 const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancelButton = document.querySelector('.img-upload__cancel ');
@@ -12,6 +16,7 @@ const description = document.querySelector('.text__description');
 const form = document.querySelector('.img-upload__form');
 const imgUploadForm = document.querySelector('.img-upload__form');
 const hashtagField = imgUploadForm.querySelector('.text__hashtags');
+const uploadButton = form.querySelector('.img-upload__submit');
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -59,7 +64,6 @@ const pristine = new Pristine (imgUploadForm, {
 });
 
 //Проверка валидности хештегов
-
 const inputInFocus = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
@@ -99,7 +103,6 @@ pristine.addValidator(
 );
 
 //функция, которая проверяет уникальность хэштегов
-
 const validateHashtagUnique = () => {
   const hashtagsArray = hashtagField.value.split(' ');
   const uniqueHashtags = new Set(hashtagsArray);
@@ -124,10 +127,21 @@ pristine.addValidator(
   'Комментарий слишком длинный'
 );
 
+const blockSubmitButton = () => {
+  uploadButton.disabled = true;
+  uploadButton.textContent = submitButtonText.SENDING;
+};
+
+export const unblockSubmitButton = () => {
+  uploadButton.disabled = false;
+  uploadButton.textContent = submitButtonText.IDLE;
+};
+
 
 imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if(pristine.validate()) {
+    blockSubmitButton();
     const formData = new FormData(evt.target);
     sendData(formData);
   }

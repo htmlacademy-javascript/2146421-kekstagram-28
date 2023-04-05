@@ -1,5 +1,6 @@
 import { showAlert, loadingErrorMessage, showSuccessMessage } from './util.js';
 import { closeUploadForm } from './form.js';
+import { unblockSubmitButton } from './form.js';
 
 const BASE_URL = 'https://28.javascript.pages.academy/kekstagram';
 const Route = {
@@ -26,7 +27,7 @@ const getData = () => fetch(`${BASE_URL}${Route.GET_DATA}`)
 const sendData = (formData) => {
   fetch((`${BASE_URL}`),
     {
-      method: 'POT',
+      method: 'POST',
       body: formData,
     },
   ).then((response) => {
@@ -38,7 +39,8 @@ const sendData = (formData) => {
   })
     .catch(() => {
       showAlert(`${ErrorText.SEND_DATA}`);
-    });
+    })
+    .finally(unblockSubmitButton);
 };
 
 export { getData, sendData};
