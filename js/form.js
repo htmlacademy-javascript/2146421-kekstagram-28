@@ -2,6 +2,7 @@ import { isEscapeKey } from './util.js';
 import { resetEffects } from './image-filters.js';
 import { resetScale } from './scale-image.js';
 import { sendData } from './api.js';
+import { showAlert, showSuccessMessage } from './util.js';
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAG_MAX_QTY = 5;
 const VALID_SYMBOLS = /^#[a-zа-я0-9]{1,19}$/i;
@@ -14,8 +15,8 @@ const imgUploadOverlay = document.querySelector('.img-upload__overlay');
 const uploadCancelButton = document.querySelector('.img-upload__cancel ');
 const description = document.querySelector('.text__description');
 const form = document.querySelector('.img-upload__form');
-const imgUploadForm = document.querySelector('.img-upload__form');
-const hashtagField = imgUploadForm.querySelector('.text__hashtags');
+const newPhotoForm = document.querySelector('.img-upload__form');
+const hashtagField = newPhotoForm.querySelector('.text__hashtags');
 const uploadButton = form.querySelector('.img-upload__submit');
 
 const onDocumentKeydown = (evt) => {
@@ -25,7 +26,7 @@ const onDocumentKeydown = (evt) => {
     if (alertModal) {
       alertModal.remove();
     } else {
-      closeUploadForm();
+      closePictureForm();
     }
   }
 };
@@ -36,7 +37,7 @@ const openUploadForm = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 };
 
-export function closeUploadForm () {
+export function closePictureForm () {
   resetEffects();
   resetScale();
   form.reset();
@@ -51,10 +52,10 @@ imgUploadFile.addEventListener('change', () => {
 });
 
 uploadCancelButton.addEventListener('click', () => {
-  closeUploadForm();
+  closePictureForm();
 });
 
-const pristine = new Pristine (imgUploadForm, {
+const pristine = new Pristine (newPhotoForm, {
   classTo: 'img-upload__text',
   errorClass: 'img-upload__text--invalid',
   successClass: 'img-upload__text--valid',
@@ -137,12 +138,22 @@ export const unblockSubmitButton = () => {
   uploadButton.textContent = submitButtonText.IDLE;
 };
 
+export const setUserFormSubmit = (onSuccess) => {
+  newPhotoForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
 
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if(pristine.validate()) {
-    blockSubmitButton();
-    const formData = new FormData(evt.target);
-    sendData(formData);
-  }
-});
+    if(pristine.validate()) {
+      blockSubmitButton();
+      const formData = new FormData(evt.target);
+      sendData(formData)
+        .then(onSuccess)
+        .then(showSuccessMessage)
+        .catch(
+          (err) => {
+            showAlert(err.message);
+          }
+        )
+        .finally(unblockSubmitButton);
+    }
+  });
+};

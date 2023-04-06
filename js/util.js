@@ -1,60 +1,39 @@
-const isEscapeKey = (evt) => evt.key === 'Escape';
 const MESSAGE_SHOW_TIME = 5000;
+const isEscapeKey = (evt) => evt.key === 'Escape';
+const alertTemplate = document.querySelector('#error').content;
+const successMessageTemplate = document.querySelector('#success').content;
 
-//Функция, которая генерирует и возвращает случайное целое число из диапазона
-const getRandomInteger = (min, max) => {
-  const lower = Math.ceil(Math.min(Math.abs(min), Math.abs(max)));
-  const upper = Math.floor(Math.max(Math.abs(min), Math.abs(max)));
-  const result = Math.random() * (upper - lower + 1) + lower;
-  return Math.floor(result);
+//Функция, которая удаляет сообщение об ошибке загрузки фото при клике на esc
+const onErrorLoadingKeydown = (evt) => {
+  const alertModal = document.querySelector('.error');
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    alertModal.remove();
+    alertModal.removeEventListener('keydown', onErrorLoadingKeydown);
+  }
 };
 
-//Функция, которая генерирует и возвращает случайное уникальное целое число из диапазона
-const createRandomIdFromRangeGenerator = (min, max) => {
-  const previousValues = [];
-  return function () {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      //console.error('Перебраны все числа из диапазона от ' + min + ' до ' + max);
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
+//Функция, удаляющая окно с сообщением об ошибке
+const onErrorButtonClick = () => {
+  document.querySelector('.error').remove();
+  document.removeEventListener ('click', onErrorButtonClick);
 };
 
-//Функция, которая возвращает случайный элемент из массива
-function randomArrayElement(array) {
-  return array[getRandomInteger(0, array.length - 1)];
-}
-
-//Функция, которая возвращает последовательно сгенерированные идентификаторы объектов, счетчик
-const createIdGenerator = () => {
-  let lastGeneratedId = 0;
-
-  return () => {
-    lastGeneratedId += 1;
-    return lastGeneratedId;
-  };
+const onModalErrorOutsideClick = (evt) => {
+  if (!evt.target.closest('.error__inner')) {
+    document.querySelector('.error').remove();
+    document.removeEventListener('click', onModalErrorOutsideClick);
+  }
 };
 
 //функция, которая генерирует сообщение об ошибке отправки данных на сервер
-
 const showAlert = () => {
-  const alertTemplate = document.querySelector('#error').content;
   const alertMessage = alertTemplate.cloneNode(true);
   document.body.append(alertMessage);
-  const alertModal = document.querySelector('.error');
-  const errorButton = alertModal.querySelector('.error__button');
-  errorButton.addEventListener('click', () => {
-    alertModal.remove();
-  });
-  document.addEventListener('click', () => {
-    alertModal.remove();
-  });
+  const errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', onErrorButtonClick);
+  document.addEventListener('keydown', onErrorLoadingKeydown);
+  document.addEventListener('click', onModalErrorOutsideClick);
 };
 
 //Функция, которая генерирует сообщение об ошибке загрузки фото других пользователей
@@ -78,26 +57,40 @@ const loadingErrorMessage = (message) => {
   }, MESSAGE_SHOW_TIME);
 };
 
-//Функция, которая генерирует сообщение об ошибке загрузки фото пользователя
+//Функция, которая удаляет сообщение об успешной загрузке при клике на esc
+const onSuccessLoadingKeydown = (evt) => {
+  const successModal = document.querySelector('.success');
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    successModal.remove();
+    successModal.removeEventListener('keydown', onSuccessLoadingKeydown);
+  }
+};
+
+//Функция, удаляющая окно с сообщением об успешной загрузке фото
+const onSuccessButtonClick = () => {
+  document.querySelector('.success').remove();
+  document.removeEventListener ('click', onSuccessButtonClick);
+};
+
+const onModalSuccessOutsideClick = (evt) => {
+  if (!evt.target.closest('.success__inner')) {
+    document.querySelector('.success').remove();
+    document.removeEventListener('click', onModalSuccessOutsideClick);
+  }
+};
+
+//Функция, которая генерирует сообщение об успешной загрузке фото пользователя
 const showSuccessMessage = () => {
-  const successMessageTemplate = document.querySelector('#success').content;
   const successMessage = successMessageTemplate.cloneNode(true);
   document.body.append(successMessage);
   const successModal = document.querySelector('.success');
   const successButton = successModal.querySelector('.success__button');
-  successButton.addEventListener('click', () => {
-    successModal.remove();
-  });
-  document.addEventListener('keydown', (evt) => {
-    if (isEscapeKey(evt)) {
-      evt.preventDefault();
-      successModal.remove();
-    }
-  });
-  document.addEventListener('click', () => {
-    successModal.remove();
-  });
+  successButton.addEventListener('click', onSuccessButtonClick);
+  document.addEventListener('keydown', onSuccessLoadingKeydown);
+  document.addEventListener('click', onModalSuccessOutsideClick);
 };
 
-export { getRandomInteger, createRandomIdFromRangeGenerator, randomArrayElement, createIdGenerator, isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage};
+export { isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage};
+
 
