@@ -1,4 +1,3 @@
-import { getData } from './api.js';
 import { isEscapeKey } from './util.js';
 
 const COMMENTS_PORTION_FOR_LOADING = 5;
@@ -16,8 +15,6 @@ const onDocumentKeydown = (evt) => {
     closeBigPicture();
   }
 };
-
-const picturesArray = await getData();
 
 const clearBigPictureComments = () => {
   bigPictureCommentList.innerHTML = '';
@@ -76,22 +73,25 @@ const showFirstComments = (array) => {
   updateCommentsCounetrs();
 };
 
-const onPictureClick = (evt) => {
-  if (evt.target.closest('.picture')) {
-    const target = evt.target.closest('.picture');
-    bigPicture.classList.remove('hidden');
-    const currentPhotoDescription = picturesArray.find((item) => item.id === Number(target.dataset.id));
-    renderBigPictureContent(currentPhotoDescription);
-    commentsLoadButton.classList.add ('hidden');
-    document.body.classList.add('modal-open');
-    document.addEventListener('keydown', onDocumentKeydown);
+export const renderBigPicture = (data) => {
+  const onMiniatureClick = (evt) => {
+    if (evt.target.closest('.picture')) {
+      const target = evt.target.closest('.picture');
+      bigPicture.classList.remove('hidden');
+      const currentPhotoDescription = data.find((item) => item.id === Number(target.dataset.id));
+      renderBigPictureContent(currentPhotoDescription);
+      commentsLoadButton.classList.add ('hidden');
+      document.body.classList.add('modal-open');
+      document.addEventListener('keydown', onDocumentKeydown);
 
-    const currentCommentsArray = currentPhotoDescription.comments;
-    renderBigPictureComments(currentCommentsArray);
+      const currentCommentsArray = currentPhotoDescription.comments;
+      renderBigPictureComments(currentCommentsArray);
 
-    const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
-    showFirstComments (hiddenComments);
-  }
+      const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
+      showFirstComments (hiddenComments);
+    }
+  };
+  picturesContainer.addEventListener('click', onMiniatureClick);
 };
 
 
@@ -112,8 +112,6 @@ commentsLoadButton.addEventListener ('click', () => {
   loadComments();
 });
 
-
-picturesContainer.addEventListener('click', onPictureClick);
 
 function closeBigPicture () {
   bigPicture.classList.add('hidden');

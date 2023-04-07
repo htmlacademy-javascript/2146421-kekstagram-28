@@ -1,10 +1,7 @@
-import { showAlert, loadingErrorMessage, showSuccessMessage } from './util.js';
-import { closeUploadForm } from './form.js';
-import { unblockSubmitButton } from './form.js';
-
 const BASE_URL = 'https://28.javascript.pages.academy/kekstagram';
 const Route = {
   GET_DATA: '/data',
+  SEND_DATA: '/',
 };
 
 const ErrorText = {
@@ -12,8 +9,8 @@ const ErrorText = {
   SEND_DATA: 'Не удалось отправить данные. Произошла ошибка',
 };
 
-
-const getData = () => fetch(`${BASE_URL}${Route.GET_DATA}`)
+const getData = () => fetch(
+  `${BASE_URL}${Route.GET_DATA}`)
   .then((response) => {
     if (!response.ok) {
       throw new Error();
@@ -21,26 +18,22 @@ const getData = () => fetch(`${BASE_URL}${Route.GET_DATA}`)
     return response.json();
   })
   .catch(() => {
-    loadingErrorMessage(`${ErrorText.GET_DATA}`);
+    throw new Error(ErrorText.GET_DATA);
   });
 
-const sendData = (formData) => {
-  fetch((`${BASE_URL}`),
-    {
-      method: 'POST',
-      body: formData,
-    },
-  ).then((response) => {
+const sendData = (body) => fetch(
+  `${BASE_URL}${Route.SEND_DATA}`,
+  {
+    method: 'POST',
+    body,
+  })
+  .then((response) => {
     if (!response.ok) {
       throw new Error();
     }
-    showSuccessMessage('Фото добавлено!');
-    closeUploadForm();
   })
-    .catch(() => {
-      showAlert(`${ErrorText.SEND_DATA}`);
-    })
-    .finally(unblockSubmitButton);
-};
+  .catch(() => {
+    throw new Error(ErrorText.SEND_DATA);
+  });
 
 export { getData, sendData};
