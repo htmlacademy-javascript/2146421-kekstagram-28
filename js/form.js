@@ -146,13 +146,13 @@ export const setUserFormSubmit = (onSuccess) => {
       blockSubmitButton();
       const formData = new FormData(evt.target);
       sendData(formData)
-        .then(onSuccess)
-        .then(showSuccessMessage)
-        .catch(
-          (err) => {
-            showAlert(err.message);
-          }
-        )
+        .then(() => {
+          onSuccess();
+          showSuccessMessage();
+        })
+        .catch((err) => {
+          showAlert(err.message);
+        })
         .finally(unblockSubmitButton);
     }
   });

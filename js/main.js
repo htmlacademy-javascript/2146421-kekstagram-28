@@ -18,14 +18,6 @@ getData()
   }
   );
 
-// try {
-//   const data = await getData();
-//   createPictures(data);
-//   renderBigPicture(data);
-// } catch (err) {
-//   loadingErrorMessage(err.message);
-// }
-
 setUserFormSubmit(closePictureForm);
 
 
