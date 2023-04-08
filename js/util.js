@@ -1,7 +1,9 @@
 const MESSAGE_SHOW_TIME = 5000;
+const RERENDER_DELAY = 500;
 const isEscapeKey = (evt) => evt.key === 'Escape';
 const alertTemplate = document.querySelector('#error').content;
 const successMessageTemplate = document.querySelector('#success').content;
+
 
 //Функция, которая удаляет сообщение об ошибке загрузки фото при клике на esc
 const onErrorLoadingKeydown = (evt) => {
@@ -91,6 +93,14 @@ const showSuccessMessage = () => {
   document.addEventListener('click', onModalSuccessOutsideClick);
 };
 
-export { isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export { isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage, debounce, RERENDER_DELAY };
 
 

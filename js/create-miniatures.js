@@ -3,7 +3,7 @@ const picturesContainer = document.querySelector('.pictures');
 const fragment = document.createDocumentFragment();
 
 const createPictures = (picturesFromServer) => {
-
+  picturesContainer.querySelectorAll('.picture').forEach ((element) => element.remove());
   picturesFromServer.forEach(({url, comments, likes, id}) => {
     const pictureElement = pictureTemplate.cloneNode(true);
     pictureElement.querySelector('.picture__img').src = url;
@@ -12,6 +12,7 @@ const createPictures = (picturesFromServer) => {
     pictureElement.dataset.id = id;
     fragment.appendChild(pictureElement);
   });
+
   return picturesContainer.appendChild(fragment);
 };
 
