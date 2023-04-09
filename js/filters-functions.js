@@ -1,13 +1,13 @@
 import { createPictures } from './create-miniatures.js';
 import { shuffle } from './util.js';
 const RANDOM_PICTURES_COUNT = 10;
-const filtersContainer = document.querySelector('.img-filters__form');
+const filtersContainer = document.querySelector('.img-filters');
 const randomFilterButton = document.querySelector('#filter-random');
 const defaultFilterButton = document.querySelector('#filter-default');
 const discussedFilterButton = document.querySelector('#filter-discussed');
-const filterRandom = document.getElementById('#filter-random');
-const filterDefault = document.getElementById('#filter-default');
-const filterDiscussed = document.getElementById('#filter-discussed');
+const filterRandom = 'filter-random';
+const filterDefault = 'filter-default';
+const filterDiscussed = 'filter-discussed';
 
 //функция, показывающая фильтры фото
 export const openFilters = () => {
@@ -56,22 +56,19 @@ const createDiscussedPictures = (picturesFromServer) => {
   discussedFilterButton.classList.add('img-filters__button--active');
 };
 
-export const generateMiniatures = (array, evt) => {
-  if (evt.target.id === filterRandom) {
-    createRandomPictures(array);
-  }
-  if (evt.target.id === filterDefault) {
-    createDefaultPictures(array);
-  }
-  if (evt.target.id === filterDiscussed) {
-    createDiscussedPictures(array);
-  }
-};
 
-export const setFilterClick = (cb) => {
-  filtersContainer.addEventListener('click', () => {
-    cb();
+export const selectGenerateFunction = (data) => {
+  filtersContainer.addEventListener('click', (evt) => {
+    const currentFilter = evt.target.id;
+    if (currentFilter === filterRandom) {
+      return createRandomPictures(data);
+    }
+    if (currentFilter === filterDefault) {
+      return createDefaultPictures(data);
+    }
+    if (currentFilter === filterDiscussed) {
+      return createDiscussedPictures(data);
+    }
   });
 };
-
 
