@@ -7,25 +7,21 @@ import { loadingErrorMessage, debounce, RERENDER_DELAY } from './util.js';
 import { createPictures } from './create-miniatures.js';
 import { setUserFormSubmit, closePictureForm } from './form.js';
 import { renderBigPicture } from './big-picture-modal.js';
-import { openFilters, createRandomPictures, setRandomPictures, setDefaultPictures, createDefaultPictures, setDiscussedPictures, createDiscussedPictures } from './filters-functions.js';
+import { openFilters, setFilterClick, generateMiniatures} from './filters-functions.js';
 import './load-new-picture.js';
 
 getData()
   .then((pictures) => {
     createPictures(pictures);
-    setDefaultPictures(() => {
-      createDefaultPictures(pictures);
-    });
     renderBigPicture(pictures);
     openFilters();
-    setRandomPictures(debounce(
-      () => createRandomPictures(pictures),
-      RERENDER_DELAY));
-    setDiscussedPictures(() => {
-      createDiscussedPictures(pictures);
-    });
+
+    setFilterClick(debounce((evt) => {
+      generateMiniatures(pictures, evt);
+    }, RERENDER_DELAY));
   })
   .catch((err) => {
     loadingErrorMessage(err.message);
   });
+
 setUserFormSubmit(closePictureForm);
