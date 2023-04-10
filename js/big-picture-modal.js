@@ -60,7 +60,6 @@ const updateCommentsCounetrs = () => {
   bigPicturePreview.querySelector('.loaded-count').textContent = bigPicturePreview.querySelector('.social__comments').querySelectorAll('li:not(.hidden)').length;
 };
 
-
 const showFirstComments = (array) => {
   const end = Math.min(array.length, COMMENTS_PORTION_FOR_LOADING);
   for (let i = 0; i < end; i++) {
@@ -93,7 +92,6 @@ export const renderBigPicture = (data) => {
   };
   picturesContainer.addEventListener('click', onMiniatureClick);
 };
-
 
 const loadComments = () => {
   const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
