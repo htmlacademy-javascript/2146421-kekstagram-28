@@ -1,5 +1,4 @@
 import { isEscapeKey } from './util.js';
-
 const COMMENTS_PORTION_FOR_LOADING = 5;
 const picturesContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
@@ -37,7 +36,6 @@ const renderBigPictureContent = (object) => {
 
 //Функция, которая отрисовывает разметку под комменты
 const renderBigPictureComments = (array) => {
-
   array.forEach((element) => {
     const commentItem = document.createElement('li');
     commentItem.classList.add ('social__comment', 'hidden');
@@ -60,13 +58,11 @@ const updateCommentsCounetrs = () => {
   bigPicturePreview.querySelector('.loaded-count').textContent = bigPicturePreview.querySelector('.social__comments').querySelectorAll('li:not(.hidden)').length;
 };
 
-
 const showFirstComments = (array) => {
   const end = Math.min(array.length, COMMENTS_PORTION_FOR_LOADING);
   for (let i = 0; i < end; i++) {
     array[i].classList.remove('hidden');
   }
-
   if (array.length > COMMENTS_PORTION_FOR_LOADING) {
     commentsLoadButton.classList.remove('hidden');
   }
@@ -94,7 +90,6 @@ export const renderBigPicture = (data) => {
   picturesContainer.addEventListener('click', onMiniatureClick);
 };
 
-
 const loadComments = () => {
   const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
   const end = Math.min(hiddenComments.length, COMMENTS_PORTION_FOR_LOADING);
@@ -107,11 +102,9 @@ const loadComments = () => {
   updateCommentsCounetrs();
 };
 
-
 commentsLoadButton.addEventListener ('click', () => {
   loadComments();
 });
-
 
 function closeBigPicture () {
   bigPicture.classList.add('hidden');

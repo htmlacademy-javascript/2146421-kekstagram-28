@@ -75,7 +75,6 @@ const inputInFocus = (evt) => {
 hashtagField.addEventListener('keydown', inputInFocus);
 description.addEventListener('keydown', inputInFocus);
 
-
 //Функция, проверяющая соответствие символом хештега
 const isTagValid = () => {
   const hashtagsArray = hashtagField.value.split(' ');

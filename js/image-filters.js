@@ -87,7 +87,6 @@ const createSlider = () => {
 createSlider();
 hideSlider ();
 
-
 //функция, которая создает новый слайдер по полученным данным о фильтре
 const updateSlider = () => {
   sliderElement.noUiSlider.updateOptions({
@@ -100,7 +99,6 @@ const updateSlider = () => {
     connect: 'lower',
   });
 };
-
 
 //функция, которая находит нужный объект в массиве с объектами эффектов и создает под него слайдер
 const changeEffects = (evt) => {
@@ -121,7 +119,6 @@ const resetEffects = () => {
   imgUploadPreview.classList.add(`effects__preview--${needfulEffectsItem.name}`);
   updateSlider();
 };
-
 
 //функция, которая связывает данные из слайдера с глубиной наложения фильтра
 sliderElement.noUiSlider.on('update', () => {
