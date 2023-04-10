@@ -43,7 +43,6 @@ const createRandomPictures = (picturesFromServer) => {
 //функция, которая отрисовыввает фото пользователей в порядке, полученном от сервера
 const createDefaultPictures = (picturesFromServer) => {
   removeActiveFilterStatus();
-  createPictures(picturesFromServer);
   defaultFilterButton.classList.add('img-filters__button--active');
   debounceCreatePictures(picturesFromServer);
 };
