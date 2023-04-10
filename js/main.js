@@ -3,7 +3,7 @@ import './form.js';
 import './scale-image.js';
 import './image-filters.js';
 import { getData } from './api.js';
-import { loadingErrorMessage, debounce, RERENDER_DELAY } from './util.js';
+import { loadingErrorMessage } from './util.js';
 import { createPictures } from './create-miniatures.js';
 import { setUserFormSubmit, closePictureForm } from './form.js';
 import { renderBigPicture } from './big-picture-modal.js';
@@ -15,7 +15,7 @@ getData()
     createPictures(pictures);
     renderBigPicture(pictures);
     openFilters();
-    debounce(selectGenerateFunction(pictures), RERENDER_DELAY);
+    selectGenerateFunction(pictures);
   })
   .catch((err) => {
     loadingErrorMessage(err.message);

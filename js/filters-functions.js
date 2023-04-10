@@ -1,5 +1,5 @@
 import { createPictures } from './create-miniatures.js';
-import { shuffle } from './util.js';
+import { shuffle, debounce, RERENDER_DELAY } from './util.js';
 const RANDOM_PICTURES_COUNT = 10;
 const filtersContainer = document.querySelector('.img-filters');
 const randomFilterButton = document.querySelector('#filter-random');
@@ -8,6 +8,7 @@ const discussedFilterButton = document.querySelector('#filter-discussed');
 const filterRandom = 'filter-random';
 const filterDefault = 'filter-default';
 const filterDiscussed = 'filter-discussed';
+const debounceCreatePictures = debounce(createPictures, RERENDER_DELAY);
 
 //функция, показывающая фильтры фото
 export const openFilters = () => {
@@ -35,16 +36,16 @@ const createRandomPictures = (picturesFromServer) => {
   picturesFromServer = picturesFromServer.slice();
   shuffle(picturesFromServer);
   const newPicturesArray = picturesFromServer.slice(0, RANDOM_PICTURES_COUNT);
-  createPictures(newPicturesArray);
   randomFilterButton.classList.add('img-filters__button--active');
+  debounceCreatePictures(newPicturesArray);
 };
-
 
 //функция, которая отрисовыввает фото пользователей в порядке, полученном от сервера
 const createDefaultPictures = (picturesFromServer) => {
   removeActiveFilterStatus();
   createPictures(picturesFromServer);
   defaultFilterButton.classList.add('img-filters__button--active');
+  debounceCreatePictures(picturesFromServer);
 };
 
 //функция, которая отрисовыввает фото пользователей, сортируя их по убыванию количества комментариев
@@ -52,8 +53,8 @@ const createDiscussedPictures = (picturesFromServer) => {
   removeActiveFilterStatus();
   picturesFromServer = picturesFromServer.slice();
   picturesFromServer.sort(compare);
-  createPictures(picturesFromServer);
   discussedFilterButton.classList.add('img-filters__button--active');
+  debounceCreatePictures(picturesFromServer);
 };
 
 
@@ -71,4 +72,3 @@ export const selectGenerateFunction = (data) => {
     }
   });
 };
-
