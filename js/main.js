@@ -7,17 +7,18 @@ import { loadingErrorMessage } from './util.js';
 import { createPictures } from './create-miniatures.js';
 import { setUserFormSubmit, closePictureForm } from './form.js';
 import { renderBigPicture } from './big-picture-modal.js';
+import { openFilters, selectGenerateFunction } from './filters-functions.js';
+import './load-new-picture.js';
 
 getData()
   .then((pictures) => {
     createPictures(pictures);
     renderBigPicture(pictures);
+    openFilters();
+    selectGenerateFunction(pictures);
   })
   .catch((err) => {
     loadingErrorMessage(err.message);
-  }
-  );
+  });
 
 setUserFormSubmit(closePictureForm);
-
-

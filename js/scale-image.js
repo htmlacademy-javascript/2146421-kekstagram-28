@@ -4,7 +4,7 @@ const STEP_SCALE = 25;
 const smallerControlButton = document.querySelector('.scale__control--smaller');
 const biggerControlButton = document.querySelector('.scale__control--bigger');
 const scaleControlValue = document.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
 
 const getScaleValue = () => {
   const scaleValue = parseInt(scaleControlValue.value, 10);
