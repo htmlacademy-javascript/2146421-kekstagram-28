@@ -20,13 +20,13 @@ const clearBigPictureComments = () => {
   bigPictureCommentList.innerHTML = '';
 };
 
-const deliteDefaultComments = () => {
+const deleteDefaultComments = () => {
   const defaultComments = bigPicturePreview.querySelectorAll('.social__comment');
   defaultComments[0].remove();
   defaultComments[1].remove();
 };
 
-deliteDefaultComments();
+deleteDefaultComments();
 
 const renderBigPictureContent = (object) => {
   bigPicturePreview.querySelector('.big-picture__img img').src = object.url;
@@ -60,14 +60,29 @@ const updateCommentsCounetrs = () => {
   bigPicturePreview.querySelector('.loaded-count').textContent = bigPicturePreview.querySelector('.social__comments').querySelectorAll('li:not(.hidden)').length;
 };
 
-const showFirstComments = (array) => {
-  const end = Math.min(array.length, COMMENTS_PORTION_FOR_LOADING);
+const showLoadingComments = (comments) => {
+  const end = Math.min(comments.length, COMMENTS_PORTION_FOR_LOADING);
   for (let i = 0; i < end; i++) {
-    array[i].classList.remove('hidden');
+    comments[i].classList.remove('hidden');
   }
+  return end;
+};
+
+const showFirstComments = (array) => {
+  showLoadingComments(array);
 
   if (array.length > COMMENTS_PORTION_FOR_LOADING) {
     commentsLoadButton.classList.remove('hidden');
+  }
+  updateCommentsCounetrs();
+};
+
+const loadComments = () => {
+  const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
+  const end = showLoadingComments(hiddenComments);
+
+  if (hiddenComments.length <= end) {
+    commentsLoadButton.classList.add('hidden');
   }
   updateCommentsCounetrs();
 };
@@ -92,19 +107,6 @@ export const renderBigPicture = (data) => {
   };
   picturesContainer.addEventListener('click', onMiniatureClick);
 };
-
-const loadComments = () => {
-  const hiddenComments = bigPictureCommentList.querySelectorAll('.hidden');
-  const end = Math.min(hiddenComments.length, COMMENTS_PORTION_FOR_LOADING);
-  for (let i = 0; i < end; i++) {
-    hiddenComments[i].classList.remove('hidden');
-  }
-  if (hiddenComments.length <= end) {
-    commentsLoadButton.classList.add('hidden');
-  }
-  updateCommentsCounetrs();
-};
-
 
 commentsLoadButton.addEventListener ('click', () => {
   loadComments();

@@ -103,7 +103,7 @@ const updateSlider = () => {
 
 
 //функция, которая находит нужный объект в массиве с объектами эффектов и создает под него слайдер
-const changeEffects = (evt) => {
+const changeEffectsHandler = (evt) => {
   needfulEffectsItem = EFFECTS.find((effect) => (evt.target.value === effect.name));
   if (prevFilterClass) {
     imgUploadPreview.classList.remove(prevFilterClass);
@@ -134,6 +134,6 @@ sliderElement.noUiSlider.on('update', () => {
   }
 });
 
-filtersGroup.addEventListener ('change', changeEffects);
+filtersGroup.addEventListener ('change', changeEffectsHandler);
 
 export { resetEffects };

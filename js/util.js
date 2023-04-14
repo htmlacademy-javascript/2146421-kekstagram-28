@@ -39,7 +39,7 @@ const showAlert = () => {
 };
 
 //Функция, которая генерирует сообщение об ошибке загрузки фото других пользователей
-const loadingErrorMessage = (message) => {
+const loadErrorMessage = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
@@ -109,6 +109,6 @@ const shuffle = (array) => {
   }
 };
 
-export { isEscapeKey, showAlert, loadingErrorMessage, showSuccessMessage, debounce, RERENDER_DELAY, shuffle };
+export { isEscapeKey, showAlert, loadErrorMessage, showSuccessMessage, debounce, RERENDER_DELAY, shuffle };
 
 

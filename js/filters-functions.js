@@ -5,9 +5,9 @@ const filtersContainer = document.querySelector('.img-filters');
 const randomFilterButton = document.querySelector('#filter-random');
 const defaultFilterButton = document.querySelector('#filter-default');
 const discussedFilterButton = document.querySelector('#filter-discussed');
-const filterRandom = 'filter-random';
-const filterDefault = 'filter-default';
-const filterDiscussed = 'filter-discussed';
+const FILTER_RANDOM = 'filter-random';
+const FILTER_DEFAULT = 'filter-default';
+const FILTER_DISCUSSED = 'filter-discussed';
 const debounceCreatePictures = debounce(createPictures, RERENDER_DELAY);
 
 //функция, показывающая фильтры фото
@@ -60,13 +60,13 @@ const createDiscussedPictures = (picturesFromServer) => {
 export const selectGenerateFunction = (data) => {
   filtersContainer.addEventListener('click', (evt) => {
     const currentFilter = evt.target.id;
-    if (currentFilter === filterRandom) {
+    if (currentFilter === FILTER_RANDOM) {
       return createRandomPictures(data);
     }
-    if (currentFilter === filterDefault) {
+    if (currentFilter === FILTER_DEFAULT) {
       return createDefaultPictures(data);
     }
-    if (currentFilter === filterDiscussed) {
+    if (currentFilter === FILTER_DISCUSSED) {
       return createDiscussedPictures(data);
     }
   });
