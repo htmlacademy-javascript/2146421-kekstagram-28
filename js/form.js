@@ -76,9 +76,9 @@ hashtagField.addEventListener('keydown', inputInFocus);
 description.addEventListener('keydown', inputInFocus);
 
 
-//Функция, проверяющая соответствие символом хештега
+//Функция, проверяющая соответствие хештега допустимым символам
 const isTagValid = () => {
-  const hashtagsArray = hashtagField.value.split(' ');
+  const hashtagsArray = hashtagField.value.trim().split(' ');
   if (hashtagField.value.length === 0) {
     return true;
   }
@@ -88,7 +88,7 @@ const isTagValid = () => {
 pristine.addValidator(
   hashtagField,
   isTagValid,
-  'Хештег должен начинаться с #, содержать буквы или цифры, быть не длиннее 20 символов.'
+  'Недопустимый хештег.'
 );
 
 //функция, которая проверяет количество хэштегов
@@ -105,7 +105,7 @@ pristine.addValidator(
 
 //функция, которая проверяет уникальность хэштегов
 const validateHashtagUnique = () => {
-  const hashtagsArray = hashtagField.value.split(' ');
+  const hashtagsArray = hashtagField.value.toLowerCase().split(' ');
   const uniqueHashtags = new Set(hashtagsArray);
 
   return hashtagsArray.length === uniqueHashtags.size;
@@ -117,10 +117,20 @@ pristine.addValidator(
   'Хештеги не должны повторяться'
 );
 
+//функция, которая проверяет наличие пробелов
+const validateHashtagSpaces = () => {
+  const hashtagsArray = hashtagField.value.trim().split(' ');
+  return !hashtagsArray.every((hashtag) => hashtag.includes('#', 1));
+};
+
+pristine.addValidator(
+  hashtagField,
+  validateHashtagSpaces,
+  'Хештеги должны разделяться пробелом'
+);
+
 //функция, которая проверяет длинну комментария
-function validateComment (value) {
-  return value.length <= COMMENT_MAX_LENGTH;
-}
+const validateComment = (value) => value.length <= COMMENT_MAX_LENGTH;
 
 pristine.addValidator(
   description,
